@@ -1,4 +1,5 @@
 import run from "aocrunner";
+import _ from "lodash";
 
 const parseInput = (rawInput: string) => {
     return rawInput;
@@ -6,13 +7,13 @@ const parseInput = (rawInput: string) => {
 
 const part1 = (rawInput: string) => {
     const input = parseInput(rawInput);
-    
+
     return;
 };
 
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
-    
+
     return;
 };
 
