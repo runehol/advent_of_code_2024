@@ -29,7 +29,7 @@ const parseInput = (rawInput: string): Data => {
     return { m, n_y, n_x, start_y, start_x }
 };
 
-const traverse = (input: Data): number | undefined => {
+const traverse = (input: Data): Set<string> | undefined => {
     let d_x = 0;
     let d_y = -1;
     let x = input.start_x;
@@ -57,30 +57,31 @@ const traverse = (input: Data): number | undefined => {
         }
         if (n_steps > 10000) return undefined;
     }
-    return visited_positions.size;
+    return visited_positions;
 }
 
 const part1 = (rawInput: string) => {
     const input = parseInput(rawInput);
-    return traverse(input);
+    const v = traverse(input);
+    if (v !== undefined) return v.size;
 };
 
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
+    const path = traverse(input);
+    if (path === undefined) return 0;
     let n_loops = 0;
-    for (let y = 0; y < input.n_y; ++y) {
-        for (let x = 0; x < input.n_x; ++x) {
-            const k = key(y, x);
-            if (input.m.get(k) == '.') {
-                const m = new Map(input.m);
-                m.set(k, '#'); // place an obstacle here
-                const input2: Data = { m, start_y: input.start_y, start_x: input.start_x, n_y: input.n_y, n_x: input.n_x }
-                if (traverse(input2) === undefined) {
-                    ++n_loops;
-                }
+    for (const k of path) {
+        if (input.m.get(k) == '.') {
+            const m = new Map(input.m);
+            m.set(k, '#'); // place an obstacle here
+            const input2: Data = { m, start_y: input.start_y, start_x: input.start_x, n_y: input.n_y, n_x: input.n_x }
+            if (traverse(input2) === undefined) {
+                ++n_loops;
             }
         }
     }
+
     return n_loops;
 };
 
